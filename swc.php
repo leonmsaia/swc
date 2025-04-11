@@ -12,6 +12,11 @@
  */
 
 add_action('wp_dashboard_setup', 'swcd_add_dashboard_widget');
+add_filter('manage_post_posts_columns', 'swcd_add_word_count_column');
+add_action('manage_post_posts_custom_column', 'swcd_display_word_count_column', 10, 2);
+add_filter('manage_edit-post_sortable_columns', 'swcd_make_word_count_sortable');
+add_action('pre_get_posts', 'swcd_order_by_word_count_column');
+add_action('save_post', 'swcd_save_word_count_meta');
 
 function swcd_add_dashboard_widget() {
     wp_add_dashboard_widget(
@@ -51,4 +56,39 @@ function swcd_count_words_by_type($type) {
     }
 
     return $total;
+}
+
+function swcd_add_word_count_column($columns) {
+    $columns['swcd_word_count'] = 'Words';
+    return $columns;
+}
+
+function swcd_display_word_count_column($column_name, $post_id) {
+    if ($column_name === 'swcd_word_count') {
+        $count = get_post_meta($post_id, '_swcd_word_count', true);
+        echo $count ? esc_html($count) : '0';
+    }
+}
+
+function swcd_save_word_count_meta($post_id) {
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (wp_is_post_revision($post_id)) return;
+
+    $content = get_post_field('post_content', $post_id);
+    $word_count = str_word_count(strip_tags($content));
+    update_post_meta($post_id, '_swcd_word_count', $word_count);
+}
+
+function swcd_make_word_count_sortable($columns) {
+    $columns['swcd_word_count'] = 'swcd_word_count';
+    return $columns;
+}
+
+function swcd_order_by_word_count_column($query) {
+    if (!is_admin() || !$query->is_main_query()) return;
+
+    if ($query->get('orderby') === 'swcd_word_count') {
+        $query->set('meta_key', '_swcd_word_count');
+        $query->set('orderby', 'meta_value_num');
+    }
 }
