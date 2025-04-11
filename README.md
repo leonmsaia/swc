@@ -1,21 +1,25 @@
 # Simple Word Counter Dashboard
 
-A lightweight WordPress plugin to display word count statistics in the dashboard and post list.  
-Created by [Leon M. Saia](https://github.com/leonmsaia).
+A lightweight WordPress plugin that adds a word count widget to your admin dashboard and a sortable "Words" column in the post list screen.
 
-## Features
+## 🔧 Features
 
-- Word count by post type in the dashboard
-- "Words" column in the post list
-- Sortable column
-- Performance optimized with post meta
+- Word count per public post type
+- Sortable column in post list
+- Optimized with post meta
+- Clean and lightweight
 
-## Installation
+## 📦 Installation
 
-1. Upload to `/wp-content/plugins/`
-2. Activate via WP Admin
-3. Done!
+1. Download or clone this repository.
+2. Upload the folder to `/wp-content/plugins/`.
+3. Activate the plugin via WP Admin → Plugins.
+4. Done!
 
-## License
+## 🧑‍💻 Author
 
-GPLv2 or later
+Developed by [Leon M. Saia](https://github.com/leonmsaia)
+
+## 🪪 License
+
+GPLv2 or later — [see license](LICENSE).
